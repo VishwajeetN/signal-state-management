@@ -1,0 +1,32 @@
+<div class="min-h-screen bg-gray-100 dark:bg-gray-800">
+  <h1>Ngrx Signal Store</h1>
+  <br>
+  <!-- {{store.todos() | json}} -->
+</div>
+
+@if(!store.loading()) {
+
+<label for="todos"><strong>Enter a TODO and press Enter:</strong></label>
+<input id="todos" name="todos" #todoInput (keyup.enter)="onAddTodo(todoInput.value)"/>
+<br>
+
+<div id="divFilter">
+  <button type="button" value="all" #filter (click)="onFilterTodos(filter.value)">All</button>
+  <button type="button" value="pending" #filterPending (click)="onFilterTodos(filterPending.value)">Pending</button>
+  <button type="button" value="completed" #filterCompleted (click)="onFilterTodos(filterCompleted.value)">Completed</button>
+</div>
+<br>
+@for(todo of store.filteredTodos(); track todo.id; let index = $index)
+{
+<div>
+  <button type="button" (click)="onDeleteTodo(todo.id, $event)">Delete</button> &nbsp;&nbsp;
+  <span [ngStyle]="{'text-decoration': todo?.completed ? 'line-through' : 'none'}">{{todo.title}}</span> &nbsp;&nbsp;
+  <input type="checkbox" id="checkboxstatus" name="checkboxstatus"  [checked]="todo?.completed" (change)="onTodoToggled(todo.id, true)"/>
+</div>
+}
+}
+@else {
+<h1>Loading....</h1>
+}
+
+<!-- <app-todos-list/> -->
